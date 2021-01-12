@@ -1,0 +1,48 @@
+syntax = "proto3";
+package bs.router;
+option go_package="go_game/protodefine/router";
+import "protodefine/mytype/types.proto";
+
+enum CMDID_Router{
+    IDUnknow = 0;			//0保留
+
+    IDTransferData = 1;		//router的转发数据包
+    IDRegisterAppReq = 2;	//其他APP向router发送的注册请求
+    IDRegisterAppRsp = 3;	//router的注册回复
+    IDLast=100;
+};
+
+message RouterTransferData{
+    enum DataDirection{
+        App2App = 0;
+        App2Client = 1;
+        Client2App = 2;
+    }
+    types.BaseInfo base = 1;
+    uint32 dest_apptype = 2;
+    uint32 dest_appid   = 3;
+    uint32 src_apptype  = 4;
+    uint32 src_appid    = 5;
+    uint32 data_cmd_kind = 6;
+    uint32 data_cmd_subid = 7;
+    bytes data= 8;
+    DataDirection data_direction = 9;
+    string client_remote_address = 10;
+    uint32 att_gateid = 11;
+    uint64 att_userid = 12;
+    uint64 att_gateconnid = 13;
+};
+
+message RegisterAppReq{
+    types.BaseInfo base = 1;
+    string auth_key = 2;
+    string att_data = 3;
+    string my_address = 4;
+    uint32 app_type= 5;
+    uint32 app_id = 6;
+};
+
+message RegisterAppRsp{
+    types.BaseInfo base = 1;
+    uint32 reg_result = 2;
+};
